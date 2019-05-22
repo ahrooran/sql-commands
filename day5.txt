@@ -1,0 +1,86 @@
+SQL> select pid, description from product2 where pid =(select pid from sales3 group by pid having count(*) in (select max(count(*)) from sales3 group by pid));
+       PID DESCRIPTION                   
+---------- ------------------------------
+       102 COKE                          
+
+SQL> select cid, description from catogary2 where cid =(select cid from subcatogary2 group by cid having count(*) in (select max(count(*)) from subcatogary2 group by cid));
+
+       CID DESCRIPTION         
+---------- --------------------
+         1 FOOD                
+
+SQL>  select * from product2;
+
+       SID        PID DESCRIPTION                   
+---------- ---------- ------------------------------
+        10        101 7UP                           
+        10        102 COKE                          
+        20        105 ABC                           
+
+
+SQL> select * from subcatogary2;
+       CID        SID DESCRIPTION         
+---------- ---------- --------------------
+         1         10 DRINKS              
+         1         20 FAST FOOD           
+         2         30 CRICKET             
+
+
+SQL> select sid, description from subcatogary2 where sid =(select sid from product2 group by sid having count(*) in (select max(count(*)) from product2 group by sid));
+       SID DESCRIPTION         
+---------- --------------------
+        10 DRINKS              
+
+SQL> select * from sales3;
+
+       PID        QTY      PRICE DATES     
+---------- ---------- ---------- ----------
+       101          2          2 21-MAY-19 
+       102          1          2 21-MAY-19 
+       101 NULL       NULL       NULL      
+       102          1          2 21-MAY-19 
+       102          1          2 22-MAY-19 
+
+SQL> select * from product2;
+
+       SID        PID DESCRIPTION                   
+---------- ---------- ------------------------------
+        10        101 7UP                           
+        10        102 COKE                          
+        20        105 ABC                           
+
+SQL> select * from subcatogary2;
+
+       CID        SID DESCRIPTION         
+---------- ---------- --------------------
+         1         10 DRINKS              
+         1         20 FAST FOOD           
+         2         30 CRICKET             
+
+
+SQL> select * from catogary2;
+       CID DESCRIPTION         
+---------- --------------------
+         1 FOOD                
+         2 SPORTS              
+
+SQL> select pid, description from product2 where pid =(select pid from sales3 group by pid having count(*) in (select max(count(*)) from sales3 group by pid));
+
+       PID DESCRIPTION                   
+---------- ------------------------------
+       102 COKE                          
+
+SQL> select cid, description from catogary2 where cid =(select cid from subcatogary2 group by cid having count(*) in (select max(count(*)) from subcatogary2 group by cid));
+
+       CID DESCRIPTION         
+---------- --------------------
+         1 FOOD                
+
+SQL> select sid, description from subcatogary2 where sid =(select sid from product2 group by sid having count(*) in (select max(count(*)) from product2 group by sid));
+
+       SID DESCRIPTION         
+---------- --------------------
+        10 DRINKS              
+
+SQL> 
+
