@@ -84,3 +84,33 @@ SQL> select sid, description from subcatogary2 where sid =(select sid from produ
 
 SQL> 
 
+SQL> create or replace procedure createbank2(name char, postcode char, acct char, city char)
+  2  is
+  3  begin
+  4  insert into bank3 values((select upper(substr(acct,1,1)) || upper(substr(city,1,1)) || lpad(nvl(max(substr(accno,3,3))+1,1),3,'0')
+  5  from bank where substr(accno,1,1) = upper(substr(acct,1,1))),name, postcode  7* /
+Procedure CREATEBANK2 compiled
+
+SQL> call createbank2('john','qw11qw','c','lon');
+
+Call completed.
+
+SQL> select * from bank3;
+
+ACCNO NAME                 ADDRESS                       
+----- -------------------- ------------------------------
+SM001 dale                 swindon                       
+SM001 John                 Manchester                    
+SM002 Fred                 Manchester                    
+SM003 Garry                Swindon                       
+SM001 Barry                Swindon                       
+SM001 Barry                Swindon                       
+SM004 Garry                Swindon                       
+SM005 Garry                Swindon                       
+CC001 peter                qw11qw                        
+CL001 peter                qw11qw                        
+CL001 john                 qw11qw                        
+CL001 john                 qw11qw                        
+
+12 rows selected. 
+
