@@ -5112,4 +5112,4 @@ ORA-00904: : invalid identifier
 SQL> create table sales2(PID number (3) references product2, qty number (3), price number (3), dates char(30));
 Table SALES2 created.
 
-SQL>  
+SQL>  select name from products where pid in ( select pid from sales group by pid having count (*) =( select max (count (*)) from sales group by pid));
