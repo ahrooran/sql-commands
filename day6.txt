@@ -1,0 +1,68 @@
+SQL> create or replace procedure catsube3(cat char, sub char)
+  2  is
+  3  newcid number(3);
+  4  newsid number (3);
+  5  begin
+  6  select nvl(max(cid),0) into newcid from catogary where description = cat;
+  7  if newcid=0 then 
+  8  select nvl(max(cid),0)+1 into newcid from catogary;
+  9  insert into catogary values(newcid,cat);
+ 10  end if;
+ 11  select nvl(max(sid),0)+10 into newsid from subcatogary1 where cid=newcid;
+ 12  insert into subcatogary1 values(newcid,newsid,sub);
+ 13  end;
+ 14* /
+Procedure CATSUBE3 compiled
+
+SQL> select * from catogary;
+
+       CID DESCRIPTION         
+---------- --------------------
+         1 Food                
+         2 General             
+         3 test                
+         4 other               
+         5 another             
+         6 anotherone          
+
+6 rows selected. 
+
+SQL> select * from subcatogary1;
+
+       CID        SID DESCRIPTION                   
+---------- ---------- ------------------------------
+         3         10 test                          
+         4         10 random                        
+         5         10 extra                         
+         6          0 extraone                      
+
+SQL> call catsube3('travel','luggage');
+
+Call completed.
+
+SQL> select * from catogary;
+
+       CID DESCRIPTION         
+---------- --------------------
+         1 Food                
+         2 General             
+         3 test                
+         4 other               
+         5 another             
+         6 anotherone          
+         7 travel              
+
+7 rows selected. 
+
+SQL> select * from subcatogary1;
+
+       CID        SID DESCRIPTION                   
+---------- ---------- ------------------------------
+         3         10 test                          
+         4         10 random                        
+         5         10 extra                         
+         6          0 extraone                      
+         7         10 luggage                       
+
+SQL> 
+
