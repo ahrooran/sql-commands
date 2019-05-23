@@ -726,3 +726,143 @@ you have deleted records
 4 rows deleted.
 
 
+SQL> create or replace trigger delete_school
+  2  after delete on school
+  3  for each row
+  4  begin
+  5  dbms_output.put_line('you have deleted records');
+  6  end;
+  7* /
+Trigger DELETE_SCHOOL compiled
+
+
+
+
+SQL> delete school;
+
+Error starting at line : 1 in command -
+delete school
+Error at Command Line : 1 Column : 8
+Error report -
+SQL Error: ORA-04098: trigger 'HR.TAKEBACKUP' is invalid and failed re-validation
+04098. 00000 -  "trigger '%s.%s' is invalid and failed re-validation"
+
+
+
+
+
+
+
+
+SQL> create or replace trigger backup12
+  2  before delete on school 
+  3  for each row 
+  4  begin
+  5  insert into backup_school values(:old.regno,:old.name,:old.mark,:old.email)
+
+
+
+
+
+
+
+
+
+
+
+SQL> delete school;
+Error starting at line : 1 in command -
+delete school
+Error at Command Line : 1 Column : 8
+Error report -
+SQL Error: ORA-04098: trigger 'HR.TAKEBACKUP' is invalid and failed re-validation
+04098. 00000 -  "trigger '%s.%s' is invalid and failed re-validation"
+*Cause:    A trigger was attempted to be retrieved for execution and was
+           found to be invalid.  This also means that compilation/authorization
+           failed for the trigger.
+*Action:   Options are to resolve the compilation/authorization errors,
+           disable the trigger, or drop the trigger.
+SQL> delete takebackup;
+
+Error starting at line : 1 in command -
+delete takebackup
+Error at Command Line : 1 Column : 8
+
+
+
+
+
+
+SQL> create or replace trigger takebackup
+  2  before delete on school 
+  3  for each row 
+  4  begin
+  5  insert into backup_school values(:old.regno,:old.name,:old.mark,:old.email);
+  7* /
+Trigger TAKEBACKUP compiled
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SQL> insert into school values(2,'jeter',78,'qw');
+
+1 row inserted.
+
+
+SQL> insert into school values(2,'jeter',78,'qw');
+
+1 row inserted.
+
+
+SQL> insert into school values(2,'jeter',78,'qw');
+
+1 row inserted.
+
+
+SQL> select * from school;
+
+     REGNO NAME                                 MARK EM
+---------- ------------------------------ ---------- --
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+
+SQL> delete school;
+you have deleted records
+you have deleted records
+you have deleted records
+
+
+3 rows deleted.
+
+SQL> select * from backup_school;
+
+     REGNO NAME                                 MARK EM
+---------- ------------------------------ ---------- --
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+         2 jeter                                  78 qw
+
+12 rows selected. 
+
+SQL> 
+
