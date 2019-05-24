@@ -866,3 +866,53 @@ SQL> select * from backup_school;
 
 SQL> 
 
+
+
+
+SQL> create or replace trigger insert_trig
+  2  before insert on school
+  3  for each row
+  4  begin
+  5  if :new.mark=58 or :new.mark=59 then :new.mark :=60;
+  6  end if;
+  7  :new.name:=upper(:new.name);
+  8  end;
+  9* /
+Trigger INSERT_TRIG compiled
+
+SQL> describe school;
+Name       Null? Type      
+---------- ----- --------- 
+REGNO            NUMBER(3) 
+NAME             CHAR(30)  
+MARK             NUMBER(3) 
+EMAIL            CHAR(2)   
+TODAYSDATE       CHAR(10)  
+SQL> insert into school values(5,'sam',58,'em','sysdate');
+
+1 row inserted.
+
+SQL> select * from school;
+
+     REGNO NAME                                 MARK EM TODAYSDATE
+---------- ------------------------------ ---------- -- ----------
+         5 john                                   89 qw NULL      
+         3 bob                                    80 qw NULL      
+         5 SAM                                    60 em sysdate   
+
+
+SQL> insert into school values(5,'sam',58,'em',sysdate);
+1 row inserted.
+
+
+SQL> select * from school;
+
+     REGNO NAME                                 MARK EM TODAYSDATE
+---------- ------------------------------ ---------- -- ----------
+         5 SAM                                    60 em 23-MAY-19 
+         5 john                                   89 qw NULL      
+         3 bob                                    80 qw NULL      
+         5 SAM                                    60 em sysdate   
+
+SQL> 
+
